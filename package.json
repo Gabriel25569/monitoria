@@ -1,0 +1,16 @@
+{
+  "name": "monitoria",
+  "version": "1.0.0",
+  "description": "Monitoria",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "tedious": "*"
+  },
+  "author": "16168 e 16195",
+  "license": "ISC"
+}
