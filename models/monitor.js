@@ -1,5 +1,6 @@
 var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
+var fs = require('fs');
 
 var Monitor = {
     setConnection: function(connection) {
@@ -20,8 +21,8 @@ var Monitor = {
         request.on('row', function (columns) { 
             let ra = columns[0].value;
             let nome = columns[1].value;
-            let imagem = columns[2].value.toString('base64');
-            
+            let imagem = fs.readFileSync('./assets/' + columns[2].value, 'base64');
+
             monitores.push({ra: ra, nome: nome, imagem: imagem});
         });
 
@@ -46,7 +47,7 @@ var Monitor = {
         request.on('row', function (columns) { 
             let ra = columns[0].value;
             let nome = columns[1].value;
-            let imagem = columns[2].value.toString('base64');
+            let imagem = fs.readFileSync('./assets/' + columns[2].value, 'base64');
             
             monitor = {ra: ra, nome: nome, imagem: imagem};
         });

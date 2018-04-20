@@ -1,12 +1,10 @@
 var express = require('express');
-var bodyParser = require('body-parser');
+var app = express();
 
 var Monitor = require('./models/monitor.js');
 var Horario = require('./models/horario.js');
 
 var connection = require('./scripts/connection.js');
-
-var app = express();
 
 Monitor.setConnection(connection);
 Horario.setConnection(connection);
@@ -16,10 +14,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/api', function(req, res) {
-    res.send('/monitor, /monitor/{RA}, /horarios/{RA}');
+    res.send('/monitores/{RA}/horarios/{DIA}');
 });
 
-app.get('/api/monitor/', function(req, res) {
+app.get('/api/monitores/', function(req, res) {
     Monitor.getMonitores(function (monitores) {
         if (monitores) {
             console.log('GET: monitores');
@@ -30,7 +28,7 @@ app.get('/api/monitor/', function(req, res) {
     });
 });
 
-app.get('/api/monitor/:_ra', function(req, res) {
+app.get('/api/monitores/:_ra', function(req, res) {
     let ra = req.params._ra;
 
     Monitor.getMonitor(ra, function(monitor) {
@@ -43,12 +41,27 @@ app.get('/api/monitor/:_ra', function(req, res) {
     });
 });
 
-app.get('/api/horarios/:_ra', function(req, res) {
+app.get('/api/monitores/:_ra/horarios', function(req, res) {
     let ra = req.params._ra;
 
-    Horario.getHorarios(ra, function(horarios) {
+    Horario.getHorarios(ra, 0, function(horarios) {
         if (horarios) {
             console.log('GET: horários ' + ra);
+            res.send(horarios);
+        } else {
+            res.sendStatus(404);
+        }
+    })
+});
+
+
+app.get('/api/monitores/:_ra/horarios/:_dia', function(req, res) {
+    let ra = req.params._ra;
+    let dia = req.params._dia || 0;
+
+    Horario.getHorarios(ra, dia, function(horarios) {
+        if (horarios) {
+            console.log('GET: horários ' + ra + ', dia ' + dia);
             res.send(horarios);
         } else {
             res.sendStatus(404);
