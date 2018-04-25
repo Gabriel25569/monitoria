@@ -19,16 +19,8 @@ public class Monitor {
     }
 
     public int getRa() { return ra; }
-    public void setModelo(int ra) { this.ra = ra; }
 
-    public String getNome () { return this.nome; }
-    public void setNome (String nome) { this.nome = nome; }
+    public String getNome () { return nome; }
 
     public String getImagem() { return imagem; }
-    public void setImagem(String imagem) { this.imagem = imagem; }
-
-    public String toString()
-    {
-        return this.ra + " - " + this.nome;
-    }
 }
