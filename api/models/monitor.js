@@ -13,8 +13,10 @@ var Monitor = {
         request = new Request("select * from Monitor", function(err, rowCount) {
             if (err) {
                 callback(null);
+                return;
             } else {
                 callback(monitores);
+                return;
             }
         });
 
@@ -32,6 +34,7 @@ var Monitor = {
     getMonitor: function(ra, callback) {
         if (ra < 10000 || ra > 99999) {
             callback(null);
+            return;
         }
 
         let monitor;
@@ -39,8 +42,10 @@ var Monitor = {
         request = new Request('select * from Monitor where ra = @ra', function(err, rowCount) {
             if (err) {
                 callback(null);
+                return;
             } else {
                 callback(monitor);
+                return;
             }
         });
         

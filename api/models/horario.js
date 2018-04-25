@@ -9,10 +9,12 @@ var Horario = {
     getHorarios: function(ra, dia, callback) {
         if (ra < 10000 || ra > 99999) {
             callback(null);
+            return;
         }
 
         if (dia < 0 || dia > 7) {
             callback(null);
+            return;
         }
 
         let query;
@@ -27,14 +29,20 @@ var Horario = {
         request = new Request(query, function(err, rowCount) {
             if (err) {
                 callback(null);
+                return;
             } else {
                 callback(horarios);
+                return;
             }
         });
 
         request.on('row', function (columns) { 
+            columns[0].value.setTime(columns[0].value.getTime() + 7200000);
+            columns[1].value.setTime(columns[1].value.getTime() + 7200000);
+
             let inicio = String(columns[0].value).split(" ")[4].substr(0, 5);
             let fim = String(columns[1].value).split(" ")[4].substr(0, 5);
+
             let dia = columns[2].value;
             
             horarios.push({inicio: inicio, fim: fim, dia: dia});
@@ -46,39 +54,6 @@ var Horario = {
             request.addParameter("dia", TYPES.Int, dia);
         }
 
-
-        Horario._connection.execSql(request);
-    },
-
-    getHorariosDia: function(ra, dia, callback) {
-        if (ra < 10000 || ra > 99999) {
-            callback(null);
-        }
-
-        if (dia < 1 || dia > 7) {
-            callback(null);
-        }
-
-        let horarios = new Array();
-        
-        request = new Request('select inicio, fim, dia from HorarioMonitor where ra = @ra and dia = @dia', function(err, rowCount) {
-            if (err) {
-                callback(null);
-            } else {
-                callback(horarios);
-            }
-        });
-
-        request.on('row', function (columns) { 
-            let inicio = String(columns[0].value).split(" ")[4].substr(0, 5);
-            let fim = String(columns[1].value).split(" ")[4].substr(0, 5);
-            let dia = columns[2].value;
-            
-            horarios.push({inicio: inicio, fim: fim, dia: dia});
-        });
-
-        request.addParameter("ra", TYPES.Int, ra);
-        request.addParameter("dia", TYPES.Int, dia);
 
         Horario._connection.execSql(request);
     }
