@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                             lvMonitores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    criarActivity(monitores.get(i).getRa());
+                                    criarActivity(monitores.get(i).getRa(), monitores.get(i).getNome());
                                 }
                             });
                         }
@@ -114,12 +114,12 @@ public class MainActivity extends AppCompatActivity {
         alerta.show();
     }
 
-    private void criarActivity(int ra) {
+    private void criarActivity(int ra, String nome) {
         Intent intent = new Intent(MainActivity.this, MonitorActivity.class);
         Bundle b = new Bundle();
-        b.putInt("ra", ra); //Your id
-        intent.putExtras(b); //Put your id to your next Intent
+        b.putInt("ra", ra);
+        b.putString("nome", nome);
+        intent.putExtras(b);
         startActivity(intent);
-        finish();
     }
 }
